@@ -1,7 +1,15 @@
-//	Final project "Lung Cancer Detection"
-//	Mata Kuliah Pengolahan Citra
-//	Abianto Wibisono 00000007344 - Teknik Informatika UPH 2014
-//  	Sherwin 00000006001 - Teknik Informatika UPH 2014
+/*  
+	Final project "Lung Cancer Detection"
+	Mata Kuliah Pengolahan Citra
+	Abianto Wibisono 00000007344 - Teknik Informatika UPH 2014
+    Sherwin			 00000006001 - Teknik Informatika UPH 2014 
+	**********************************************************
+	Current Version : Ver.1.2.0
+	Ver.1.0.0		: Initial code
+	Ver.1.1.0		: Pre-processing code complete
+	Ver.1.1.1		: Pre-processing compiled into 1 function
+	Ver.1.2.0		: New Method for calculating black pixels + logical comparation
+*/
 
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -48,18 +56,50 @@ Mat preProcSequence(Mat src)
 	return dilate_out;
 }
 
+//Method untuk menghitung jumlah pixel yang bernilai 0.
+int calculateZeroPixels(Mat src)
+{
+	int TotalNumberOfPixels = src.rows * src.cols;
+	int ZeroPixels = TotalNumberOfPixels - countNonZero(src);
+	
+	return ZeroPixels;
+}
+
 int main()
 {
-	Mat source;
-	Mat src_proc;
-	source = imread("dataset4.jpg", CV_LOAD_IMAGE_GRAYSCALE);
-	imshow("Original Image", source);
+	Mat source, source2, src_proc, src_proc2, result;
+	source = imread("dataset3.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+	imshow("Normal Lung", source);
+
+	source2 = imread("dataset4.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+	imshow("Lung to Compare", source2);
+	//experimental convert
 	
 	//Ver.2
 	src_proc = preProcSequence(source);
-	imshow("Pre-Processed Image", src_proc);
+	imshow("Pre-Processed Normal Lung", src_proc);
+
+	src_proc2 = preProcSequence(source2);
+	imshow("Pre-Processed Lung to Compare", src_proc2);
+	//cout << src_proc2;
+
+	// Comparation Proccess
+	int ZeroPixelsGuide = calculateZeroPixels(src_proc);
+	cout << " Number of Black in Picture Guide: " << ZeroPixelsGuide << endl;
+
+	int ZeroPixelsComp = calculateZeroPixels(src_proc2);
+	cout << " Number of Black in Analyzed Picture: " << ZeroPixelsComp << endl;
+
+	cout << " " << ZeroPixelsGuide << " Black Pixels in Base Picture Compared to " 
+		 << " " << ZeroPixelsComp << " Black Pixels in Analyzed Picture" << endl;
+
+	if (ZeroPixelsComp < ZeroPixelsGuide) 
+	{
+		cout << " Maligant ";
+	}
+	else cout << " Normal ";
+
 
 	waitKey(0);
-
 	return 0;
 }

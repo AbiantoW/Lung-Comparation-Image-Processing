@@ -1,7 +1,7 @@
 //	Final project "Lung Cancer Detection"
 //	Mata Kuliah Pengolahan Citra
 //	Abianto Wibisono 00000007344 - Teknik Informatika UPH 2014
-//  Sherwin			 00000006001 - Teknik Informatika UPH 2014
+//  	Sherwin 00000006001 - Teknik Informatika UPH 2014
 
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
